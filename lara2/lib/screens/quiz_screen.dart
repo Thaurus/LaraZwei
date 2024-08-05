@@ -54,23 +54,23 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void updateImage() {
     if (didNoMistake) {
-      setState(() {
-        picturesToLearn.removeAt(currentImageIndex);
-        if (picturesToLearn.isEmpty) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FinishScreen(index),
-            ),
-          );
-        }
+      picturesToLearn.removeAt(currentImageIndex);
+      if (picturesToLearn.isEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FinishScreen(index),
+          ),  
+        );
+        return;
+      } else {
         currentImageIndex = (currentImageIndex % picturesToLearn.length).toInt();
-      });
+      }
     } else {
-      setState(() {
+      
         currentImageIndex = ((currentImageIndex + 1) % picturesToLearn.length).toInt();
-      });
     }
+    setState(() {});
     update();
   }
 
@@ -84,7 +84,7 @@ class _QuizScreenState extends State<QuizScreen> {
     if (!(index >= 0 && index < setup.images.length)) {
       return [];
     }
-    return setup.images[getCategory(index)]!;    
+    return List.from(setup.images[getCategory(index)]!);
   }
 
   @override

@@ -172,41 +172,29 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          child: Column(
-            children: [
-              Text(
-                'Du hast Kategorie ${setup.getChapterName(index)} geschafft! Zeig das deiner Lehrkraft :)',
-                style: TextStyle(fontSize: 24),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  );
-                },
-                child: Text('Zurück zur Auswahl'),
-              ),
-            LayoutBuilder(
-        builder: (context, constraints) {
-          if (_screenSize == Size.zero) {
-            // Initial setup for screen size
-            _screenSize = Size(constraints.maxWidth, constraints.maxHeight);
-          }
-
-          return CustomPaint(
-            painter: FireworkPainter(_fireworks),
-            child: Container(),
-          );
-        },
-      )
-
-          ]
-        ),
-      ),
+        child: Column(
+          children: [
+            Text(
+              'Du hast Kategorie ${setup.getChapterName(index)} geschafft! Zeig das deiner Lehrkraft :)',
+              style: TextStyle(fontSize: 24),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  (route) => route.isFirst,
+                );
+              },
+              child: const Text('Zurück zur Auswahl'),
+            ),
+          CustomPaint(
+          painter: FireworkPainter(_fireworks),
+          child: Container(),
+        )
+        
+        ]
+                ),
       ),
     );
   }
