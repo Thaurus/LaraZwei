@@ -1,38 +1,56 @@
 import 'dart:async';
+import 'setup.dart' as setup;
 import 'package:flutter/material.dart';
 import 'finish_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final int index;
-
-  QuizScreen(this.index);
+  const QuizScreen(this.index, {super.key});
 
   @override
-  _QuizScreenState createState() => _QuizScreenState(index);
+  State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  final int index;
-  _QuizScreenState(this.index);
+  late final int index;
+  List<TextEditingController> _controllers = [];
+  List<FocusNode> _focusNodes = [];
 
-  final TextEditingController _textController = TextEditingController();
-  final List<TextEditingController> _controllers = List.generate(10, (index) => TextEditingController());
-
-  var picturesTexts;
+  List<String> picturesToLearn = [];
   int currentImageIndex = 0;
   bool didNoMistake = true;
 
   @override
   void initState() {
     super.initState();
-    picturesTexts = getCategory(index);
+    index = widget.index;
+    picturesToLearn = getImageList(index);
+    update();
+  }
+
+  @override
+  void dispose(){
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    for (var focusNode in _focusNodes) {
+      focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  void update(){
+    _controllers = List.generate(currentWord().length, (index) => TextEditingController());
+    _focusNodes = List.generate(currentWord().length, (index) => FocusNode());
+    didNoMistake = true;
+    _focusNodes[0].requestFocus();
   }
 
   void updateImage() {
     if (didNoMistake) {
       setState(() {
-        picturesTexts.removeAt(currentImageIndex);
-        if (picturesTexts.length <= 0) {
+        picturesToLearn.removeAt(currentImageIndex);
+        if (picturesToLearn.isEmpty) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -40,156 +58,96 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           );
         }
-        currentImageIndex = (currentImageIndex % picturesTexts.length).toInt();
+        currentImageIndex = (currentImageIndex % picturesToLearn.length).toInt();
       });
     } else {
       setState(() {
-        currentImageIndex = ((currentImageIndex + 1) % picturesTexts.length).toInt();
+        currentImageIndex = ((currentImageIndex + 1) % picturesToLearn.length).toInt();
       });
     }
-
-    didNoMistake = true;
+    update();
   }
 
-  List<String> getCategory(int category) {
-    // This function returns the category based on the index
-    switch (category) {
-      case 1:
-        return [
-          "assets/images/simple/affe.png",
-          "assets/images/simple/hund.png",
-          "assets/images/simple/lila.png",
-          "assets/images/simple/oma.png",
-          "assets/images/simple/haus.png",
-          "assets/images/simple/buch.png",
-          "assets/images/simple/baum.png",
-          "assets/images/simple/hand.png",
-          "assets/images/simple/ei.png",
-          "assets/images/simple/hase.png",
-          "assets/images/simple/maus.png",
-          "assets/images/simple/auto.png",
-          "assets/images/simple/ball.png",
-          "assets/images/simple/apfel.png"
-        ];
-      case 2:
-        return [
-          "assets/images/medium/fisch.png",
-          "assets/images/medium/katze.png",
-          "assets/images/medium/vogel.png",
-          "assets/images/medium/tasse.png",
-          "assets/images/medium/flasche.png",
-          "assets/images/medium/stuhl.png",
-          "assets/images/medium/schuh.png",
-          "assets/images/medium/blume.png",
-          "assets/images/medium/keks.png",
-          "assets/images/medium/wurm.png",
-          "assets/images/medium/stern.png",
-          "assets/images/medium/stein.png",
-          "assets/images/medium/brot.png"
-        ];
-      case 3:
-        return [
-          "assets/images/hard/fuchs.png",
-          "assets/images/hard/panda.png",
-          "assets/images/hard/kerze.png",
-          "assets/images/hard/kamera.png",
-          "assets/images/hard/schiff.png",
-          "assets/images/hard/lampe.png",
-          "assets/images/hard/schwamm.png",
-          "assets/images/hard/gitarre.png",
-          "assets/images/hard/kuchen.png",
-          "assets/images/hard/trampolin.png",
-          "assets/images/hard/fahrrad.png",
-          "assets/images/hard/ballon.png",
-          "assets/images/hard/hamster.png"
-        ];
-      default:
-        return [];
+  String currentWord() => picturesToLearn[currentImageIndex];
+
+  String getCategory(int index) {
+    return setup.images.keys.toList()[index];
+  }
+
+  List<String> getImageList(int index) {
+    if (!(index >= 0 && index < setup.images.length)) {
+      return [];
     }
-  }
-
-  String joinTexts(List<TextEditingController> controllers) {
-    String text = "";
-    for (TextEditingController controller in controllers) {
-      text += controller.text;
-    }
-    return text;
-  }
-
-  void clearText(List<TextEditingController> controllers) {
-    for (TextEditingController controller in controllers) {
-      controller.clear();
-    }
-  }
-
-  String getWordFromImagePath(String path) {
-    return path.split('/').last.split('.').first;
-  }
-
-  Future<void> _sleep() async {
-    await Future.delayed(Duration(seconds: 3));
+    return setup.images[getCategory(index)]!;    
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Image.asset(
-                  picturesTexts[currentImageIndex],
-                  fit: BoxFit.contain,
+    return GestureDetector(      
+      onTap: () {
+        if (!_focusNodes[index].hasFocus) {
+          _focusNodes[index].requestFocus();
+        }
+      },
+      child: Scaffold(
+        body: Center(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Image.asset(
+                    "assets/images/${getCategory(index)}/${currentWord()}.png",
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: getWordFromImagePath(picturesTexts[currentImageIndex]).length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 50,
-                      margin: const EdgeInsets.all(5),
-                      child: TextField(
-                        controller: _controllers[index],
-                        maxLength: 1,
-                        textAlign: TextAlign.center,
-                        decoration: const InputDecoration(
-                          counterText: '',
-                          border: OutlineInputBorder(),
+                Expanded(
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: currentWord().length,
+                    itemBuilder: (context, index) {
+                      String char = currentWord()[index];
+                      return Container(
+                        width: 50,
+                        margin: const EdgeInsets.all(5),
+                        child: AbsorbPointer(
+                          child: TextField(
+                            controller: _controllers[index],
+                            maxLength: 1,
+                            textAlign: TextAlign.center,
+                            focusNode: _focusNodes[index],
+                            decoration: const InputDecoration(
+                              counterText: '',
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (value) {
+                              _controllers[index].text = value.toUpperCase();
+                          
+                              // Test if the user input is correct
+                              if (char.toLowerCase() != value.toLowerCase()) {
+                                _controllers[index].text = "";
+                                didNoMistake = false;
+                              } else if(index == currentWord().length - 1) {
+                                _focusNodes[index].unfocus();
+                                Timer(const Duration(seconds: 4), () {
+                                  updateImage();
+                                });
+                              } else {
+                                _focusNodes[index].unfocus();
+                                _focusNodes[index + 1].requestFocus();
+                              }
+                            },
+                          ),
                         ),
-                        onChanged: (value) {
-                          _controllers[index].text = value.toUpperCase();
-                          String text = joinTexts(_controllers);
-                          if (getWordFromImagePath(picturesTexts[currentImageIndex]).substring(0, text.toLowerCase().length) != text.toLowerCase()) {
-                            _controllers[index].text = "";
-                            didNoMistake = false;
-                          }
-
-                          if (text.toLowerCase() == getWordFromImagePath(picturesTexts[currentImageIndex])) {
-                            Timer(Duration(seconds: 4), () {
-                              clearText(_controllers);
-                              updateImage();
-                              FocusScope.of(context).nextFocus();
-                            });
-                          }
-                          if (value.isNotEmpty) {
-                            if (_controllers[index].text.isNotEmpty) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          }
-                        },
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
