@@ -191,7 +191,7 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
           );
         },
       ),
-              ElevatedButton(
+          ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -201,21 +201,10 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
                   );
                 },
                 child: Text('Zurück zur Auswahl'),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
-                );
-              },
-              child: const Text('Zurück zur Auswahl'),
-            ),
-          ],
+              )
+          ]
         ),
+      ),
       ),
     );
   }
