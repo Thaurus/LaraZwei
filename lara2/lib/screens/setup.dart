@@ -50,5 +50,5 @@ Map<String, List<String>> images = {
     "fahrrad",
     "ballon",
     "hamster"
-  ]
+  ],
 };

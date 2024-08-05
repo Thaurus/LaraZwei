@@ -2,14 +2,31 @@ import 'package:flutter/material.dart';
 import 'quiz_screen.dart';
 import 'setup.dart' as setup;
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool developerMode = false;
+  Color _buttonColor = Colors.grey;
+
+  void _updateButtonColor() {
+    setState(() {
+      _buttonColor = _buttonColor == Colors.grey ? Colors.red : Colors.grey;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
+      body: Stack(
+        children: [
+          Center(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(setup.images.length, (index) {
             return Padding(
@@ -19,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => QuizScreen(index),
+                      builder: (context) => QuizScreen(index, developerMode),
                     ),
                   );
                 },
@@ -27,7 +44,22 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           }),
-        ),
+        )),
+          Positioned(
+            bottom: 20.0,
+            right: 20.0,
+            child: FloatingActionButton(
+              backgroundColor: _buttonColor,
+              onPressed: () {
+                developerMode = !developerMode;
+                _updateButtonColor();
+
+              },
+              child: Icon(Icons.add),
+              mini: true, // Makes the button small
+            ),
+          ),
+        ],
       ),
     );
   }
