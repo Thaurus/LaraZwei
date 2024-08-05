@@ -5,14 +5,18 @@ import 'finish_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final int index;
-  const QuizScreen(this.index, {super.key});
+  final bool developerMode;
+  const QuizScreen(this.index, this.developerMode, {super.key});
 
   @override
-  State<QuizScreen> createState() => _QuizScreenState();
+  State<QuizScreen> createState() => _QuizScreenState(this.index, this.developerMode);
 }
 
 class _QuizScreenState extends State<QuizScreen> {
   late final int index;
+  late final bool developerMode;
+  _QuizScreenState(this.index, this.developerMode);
+
   List<TextEditingController> _controllers = [];
   List<FocusNode> _focusNodes = [];
 
@@ -23,8 +27,10 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     super.initState();
-    index = widget.index;
     picturesToLearn = getImageList(index);
+    if (developerMode) {
+      picturesToLearn = picturesToLearn.sublist(0,2);
+    }
     update();
   }
 
@@ -90,6 +96,10 @@ class _QuizScreenState extends State<QuizScreen> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(setup.getChapterName(index)),
+          centerTitle: true,
+        ),
         body: Center(
           child: Container(
             padding: const EdgeInsets.all(16.0),
@@ -132,6 +142,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                 didNoMistake = false;
                               } else if(index == currentWord().length - 1) {
                                 _focusNodes[index].unfocus();
+                                if(developerMode){
+                                  updateImage();
+                                }
                                 Timer(const Duration(seconds: 4), () {
                                   updateImage();
                                 });
