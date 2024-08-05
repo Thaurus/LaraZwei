@@ -57,7 +57,7 @@ class _QuizScreenState extends State<QuizScreen> {
       case 1:
         return [
           "assets/images/simple/affe.png",
-          "assets/images/simple/hund.png",
+          /*"assets/images/simple/hund.png",
           "assets/images/simple/lila.png",
           "assets/images/simple/oma.png",
           "assets/images/simple/haus.png",
@@ -69,7 +69,7 @@ class _QuizScreenState extends State<QuizScreen> {
           "assets/images/simple/maus.png",
           "assets/images/simple/auto.png",
           "assets/images/simple/ball.png",
-          "assets/images/simple/apfel.png"
+          "assets/images/simple/apfel.png"*/
         ];
       case 2:
         return [
