@@ -5,7 +5,7 @@ String getChapterName(int index) {
 }
 
 Map<String, List<String>> images = {
-  "simple": [
+  "einfach": [
     "affe",
     "hund",
     "lila",
@@ -21,7 +21,7 @@ Map<String, List<String>> images = {
     "ball",
     "apfel"
   ],
-  "medium": [
+  "mittel": [
     "fisch",
     "katze",
     "vogel",
@@ -36,7 +36,7 @@ Map<String, List<String>> images = {
     "stein",
     "brot"
   ],
-  "hard": [
+  "schwer": [
     "fuchs",
     "panda",
     "kerze",
