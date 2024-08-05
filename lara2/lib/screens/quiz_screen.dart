@@ -83,65 +83,71 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Image.asset(
-                  "assets/images/${getCategory(index)}/${currentWord()}.png",
-                  fit: BoxFit.contain,
+    return GestureDetector(      
+      onTap: () {
+        if (!_focusNodes[index].hasFocus) {
+          _focusNodes[index].requestFocus();
+        }
+      },
+      child: Scaffold(
+        body: Center(
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Image.asset(
+                    "assets/images/${getCategory(index)}/${currentWord()}.png",
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: currentWord().length,
-                  itemBuilder: (context, index) {
-                    String char = currentWord()[index];
-                    return Container(
-                      width: 50,
-                      margin: const EdgeInsets.all(5),
-                      child: AbsorbPointer(
-                        absorbing: true,
-                        child: TextField(
-                          controller: _controllers[index],
-                          maxLength: 1,
-                          textAlign: TextAlign.center,
-                          focusNode: _focusNodes[index],
-                          decoration: const InputDecoration(
-                            counterText: '',
-                            border: OutlineInputBorder(),
+                Expanded(
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: currentWord().length,
+                    itemBuilder: (context, index) {
+                      String char = currentWord()[index];
+                      return Container(
+                        width: 50,
+                        margin: const EdgeInsets.all(5),
+                        child: AbsorbPointer(
+                          child: TextField(
+                            controller: _controllers[index],
+                            maxLength: 1,
+                            textAlign: TextAlign.center,
+                            focusNode: _focusNodes[index],
+                            decoration: const InputDecoration(
+                              counterText: '',
+                              border: OutlineInputBorder(),
+                            ),
+                            onChanged: (value) {
+                              _controllers[index].text = value.toUpperCase();
+                          
+                              // Test if the user input is correct
+                              if (char.toLowerCase() != value.toLowerCase()) {
+                                _controllers[index].text = "";
+                                didNoMistake = false;
+                              } else if(index == currentWord().length - 1) {
+                                _focusNodes[index].unfocus();
+                                Timer(const Duration(seconds: 4), () {
+                                  updateImage();
+                                });
+                              } else {
+                                _focusNodes[index].unfocus();
+                                _focusNodes[index + 1].requestFocus();
+                              }
+                            },
                           ),
-                          onChanged: (value) {
-                            _controllers[index].text = value.toUpperCase();
-                        
-                            // Test if the user input is correct
-                            if (char.toLowerCase() != value.toLowerCase()) {
-                              _controllers[index].text = "";
-                              didNoMistake = false;
-                            } else if(index == currentWord().length - 1) {
-                              _focusNodes[index].unfocus();
-                              Timer(const Duration(seconds: 4), () {
-                                updateImage();
-                              });
-                            } else {
-                              _focusNodes[index].unfocus();
-                              _focusNodes[index + 1].requestFocus();       
-                            }
-                          },
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
