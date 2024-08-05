@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'quiz_screen.dart';
+import 'setup.dart' as setup;
 
 class HomeScreen extends StatelessWidget {
-  final int amountOfCategories = 3; // Change this to the desired number of categories
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(amountOfCategories, (index) {
+          children: List.generate(setup.images.length, (index) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: ElevatedButton(
@@ -18,11 +19,11 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => QuizScreen(index + 1),
+                      builder: (context) => QuizScreen(index),
                     ),
                   );
                 },
-                child: Text('Kategorie  ${index + 1}'),
+                child: Text(setup.getChapterName(index)),
               ),
             );
           }),

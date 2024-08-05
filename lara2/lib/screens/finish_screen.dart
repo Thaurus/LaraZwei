@@ -4,11 +4,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'setup.dart' as setup;
 
 class FinishScreen extends StatefulWidget {
   final int index;
-
-  FinishScreen(this.index);
+  const FinishScreen(this.index, {super.key});
 
   @override
   _FinishScreenState createState() => _FinishScreenState(this.index);
@@ -202,8 +202,19 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
                 },
                 child: Text('Zurück zur Auswahl'),
               ),
-            ],
-          ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeScreen(),
+                  ),
+                );
+              },
+              child: const Text('Zurück zur Auswahl'),
+            ),
+          ],
         ),
       ),
     );
