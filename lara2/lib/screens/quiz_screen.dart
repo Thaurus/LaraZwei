@@ -70,7 +70,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
 
   String currentWord() => picturesToLearn[currentImageIndex];
-
   String getCategory(int index) {
     return setup.images.keys.toList()[index];
   }

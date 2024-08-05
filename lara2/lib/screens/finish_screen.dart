@@ -74,6 +74,7 @@ class Particle {
         position.dy + sin(direction) * speed,
       );
       life -= 0.01;
+      life = max(0.0, life);
     } else {
       isFinished = true;
     }
@@ -96,7 +97,7 @@ class FireworkPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     for (final particle in firework.particles) {
-      paint.color = particle.color.withOpacity(particle.life);
+      paint.color = particle.color.withOpacity(particle.life.clamp(0.0, 1.0));
       canvas.drawCircle(
           firework.position + particle.position, 4, paint);
     }
@@ -175,8 +176,19 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
           child: Column(
             children: [
               Text(
-                'Du hast Kategorie $index geschafft! Zeig das deiner Lehrkraft :)',
+                'Du hast Kategorie ${setup.getChapterName(index)} geschafft! Zeig das deiner Lehrkraft :)',
                 style: TextStyle(fontSize: 24),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                    ),
+                  );
+                },
+                child: Text('Zurück zur Auswahl'),
               ),
             LayoutBuilder(
         builder: (context, constraints) {
@@ -190,18 +202,8 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
             child: Container(),
           );
         },
-      ),
-          ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(),
-                    ),
-                  );
-                },
-                child: Text('Zurück zur Auswahl'),
-              )
+      )
+
           ]
         ),
       ),
