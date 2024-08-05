@@ -1,10 +1,9 @@
-import 'dart:html';
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class FinishScreen extends StatefulWidget {
   final int index;
@@ -121,7 +120,6 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
 
 
   final AudioPlayer audioPlayer = AudioPlayer();
-  bool _isAnimating = false;
   late Size _screenSize;
 
   void playSound() async {
@@ -136,7 +134,7 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
     playSound();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5),
+      duration: Duration(seconds: 3),
     )..repeat();
 
     // Defer initialization of fireworks until after the first frame
