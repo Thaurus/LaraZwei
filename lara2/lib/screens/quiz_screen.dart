@@ -2,6 +2,7 @@ import 'dart:async';
 import 'setup.dart' as setup;
 import 'package:flutter/material.dart';
 import 'finish_screen.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class QuizScreen extends StatefulWidget {
   final int index;
@@ -18,11 +19,14 @@ class _QuizScreenState extends State<QuizScreen> {
   _QuizScreenState(this.index, this.developerMode);
 
   List<TextEditingController> _controllers = [];
+  List<Color> _borderColors = [];
   List<FocusNode> _focusNodes = [];
 
   List<String> picturesToLearn = [];
   int currentImageIndex = 0;
   bool didNoMistake = true;
+  final AudioPlayer audioPlayer = AudioPlayer();
+
 
   @override
   void initState() {
@@ -45,9 +49,19 @@ class _QuizScreenState extends State<QuizScreen> {
     super.dispose();
   }
 
+  void playSound() async {
+    if (audioPlayer.state != PlayerState.PLAYING) {
+      await audioPlayer.play('assets/sounds/error.mp3');
+    } else {
+      await audioPlayer.stop();
+      await audioPlayer.play('assets/sounds/error.mp3');
+    }
+  }
+
   void update(){
     _controllers = List.generate(currentWord().length, (index) => TextEditingController());
     _focusNodes = List.generate(currentWord().length, (index) => FocusNode());
+    _borderColors = List.generate(currentWord().length, (index) => Colors.black);
     didNoMistake = true;
     _focusNodes[0].requestFocus();
   }
@@ -129,8 +143,14 @@ class _QuizScreenState extends State<QuizScreen> {
                             maxLength: 1,
                             textAlign: TextAlign.center,
                             focusNode: _focusNodes[index],
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               counterText: '',
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: _borderColors[index]),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: _borderColors[index]),
+                              ),
                               border: OutlineInputBorder(),
                             ),
                             onChanged: (value) {
@@ -138,9 +158,13 @@ class _QuizScreenState extends State<QuizScreen> {
                           
                               // Test if the user input is correct
                               if (char.toLowerCase() != value.toLowerCase()) {
+                                _borderColors[index] = Colors.red;
+                                playSound();
                                 _controllers[index].text = "";
                                 didNoMistake = false;
+                                
                               } else if(index == currentWord().length - 1) {
+                                _borderColors[index] = Colors.green;
                                 _focusNodes[index].unfocus();
                                 if(developerMode){
                                   updateImage();
@@ -149,9 +173,11 @@ class _QuizScreenState extends State<QuizScreen> {
                                   updateImage();
                                 });
                               } else {
+                                _borderColors[index] = Colors.green;
                                 _focusNodes[index].unfocus();
                                 _focusNodes[index + 1].requestFocus();
                               }
+                              setState(() {});
                             },
                           ),
                         ),
