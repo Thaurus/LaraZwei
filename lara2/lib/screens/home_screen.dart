@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lara2/screens/stats_and_settings_screen.dart';
 import 'quiz_screen.dart';
 import 'setup.dart' as setup;
 
@@ -22,6 +23,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.bar_chart),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen(initTab: 0)));
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen(initTab: 1)));
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           Center(

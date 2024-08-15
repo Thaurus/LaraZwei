@@ -6,6 +6,7 @@ import 'setup.dart' as setup;
 import 'package:flutter/material.dart';
 import 'finish_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:lara2/globals.dart' as globals;
 
 class QuizScreen extends StatefulWidget {
   final int index;
@@ -25,6 +26,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
   int currentImageIndex = 0;
   bool didNoMistake = true;
   final AudioPlayer audioPlayer = AudioPlayer();
+  int errors = 0;
   bool isPlaying = false;
   late AnimationController animationController;
 
@@ -70,9 +72,11 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
   }
 
   void updateImage() {
-    if (didNoMistake) {
+    if (globals.easyMode || didNoMistake) {
+      if (!didNoMistake) errors++;
       picturesToLearn.removeAt(currentImageIndex);
       if (picturesToLearn.isEmpty) {
+        globals.chapterMistakes[setup.getChapterName(index)] = errors;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -84,7 +88,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
         currentImageIndex = (currentImageIndex % picturesToLearn.length).toInt();
       }
     } else {
-      
+        errors++;  
         currentImageIndex = ((currentImageIndex + 1) % picturesToLearn.length).toInt();
     }
     setState(() {});
@@ -108,7 +112,8 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return GestureDetector(      
       onTap: () {
-        if (!_focusNodes[widget.index].hasFocus) {
+        int index = _controllers.indexWhere((element) => element.text.isEmpty);
+        if (index != -1 && !_focusNodes[widget.index].hasFocus) {
           _focusNodes[widget.index].requestFocus();
         }
       },
@@ -167,17 +172,18 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
                                 // Test if the user input is correct
                                 if (char.toLowerCase() != value.toLowerCase()) {
                                   _borderColors[index] = Colors.red;
+                                  if(globals.playSound) playSound();
                                   _controllers[index].text = "";
                                   didNoMistake = false;
                                   animationController.forward(from: 0.0);
-                                  playSound();
+                                  if(globals.playSound) playSound();
                                 } else if(index == currentWord().length - 1) {
                                   _borderColors[index] = Colors.green;
                                   _focusNodes[index].unfocus();
                                   if(widget.developerMode){
                                     updateImage();
                                   }
-                                  Timer(const Duration(seconds: 4), () {
+                                  Timer(const Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
                                     updateImage();
                                   });
                                 } else {
