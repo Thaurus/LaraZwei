@@ -17,7 +17,7 @@ class QuizScreen extends StatefulWidget {
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
-class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateMixin {
+class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   List<TextEditingController> _controllers = [];
   List<Color> _borderColors = [];
   List<FocusNode> _focusNodes = [];
@@ -29,16 +29,25 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
   int errors = 0;
   bool isPlaying = false;
   late AnimationController animationController;
+  late AnimationController loadingAnimationController;
+
 
   @override
   void initState() {
     super.initState();
+    loadingAnimationController = AnimationController(duration: Duration(seconds: globals.secondsToWait.toInt()), vsync: this, )..addListener(() {
+      setState(() {});
+    });
     animationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+
+
+
     picturesToLearn = getImageList(widget.index);
     if (widget.developerMode) {
       picturesToLearn = picturesToLearn.sublist(0,2);
     }
     update();
+
   }
 
   @override
@@ -64,6 +73,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
   }
 
   void update(){
+    loadingAnimationController.reset();
     _controllers = List.generate(currentWord().length, (index) => TextEditingController());
     _focusNodes = List.generate(currentWord().length, (index) => FocusNode());
     _borderColors = List.generate(currentWord().length, (index) => Colors.black);
@@ -76,7 +86,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
       if (!didNoMistake) errors++;
       picturesToLearn.removeAt(currentImageIndex);
       if (picturesToLearn.isEmpty) {
-        globals.chapterMistakes[setup.getChapterName(index)] = errors;
+        globals.chapterMistakes[setup.getChapterTitle(widget.index)] = errors;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -93,6 +103,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
     }
     setState(() {});
     update();
+
   }
 
 
@@ -183,7 +194,8 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
                                   if(widget.developerMode){
                                     updateImage();
                                   }
-                                  Timer(const Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
+                                  loadingAnimationController.forward(from: 0.0);
+                                  Future.delayed(Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
                                     updateImage();
                                   });
                                 } else {
@@ -200,6 +212,9 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
                     ),
                   ),
                 ),
+                SizedBox(height: 30, child: LinearProgressIndicator(
+                value: loadingAnimationController.value,
+              ),)
               ],
             ),
           ),
