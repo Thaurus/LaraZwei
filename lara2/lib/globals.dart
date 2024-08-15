@@ -1,6 +1,6 @@
 // Settings
 bool playSound = true;
-double secondsToWait = 1;
+double secondsToWait = 4;
 bool easyMode = false;
 
 // Statistics
