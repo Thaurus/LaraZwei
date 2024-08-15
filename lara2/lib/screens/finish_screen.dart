@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'setup.dart' as setup;
+import 'package:lara2/globals.dart' as globals;
 
 class FinishScreen extends StatefulWidget {
   final int index;
@@ -132,7 +133,7 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    playSound();
+    if(globals.playSound) playSound();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: 3),

@@ -29,13 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.bar_chart),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen(initTab: 0)));
             },
           ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen(initTab: 1)));
             },
           ),
         ],
