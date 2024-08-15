@@ -1,4 +1,3 @@
-
 String getChapterName(int index) {
   String unformatted = images.keys.toList()[index];
   return unformatted[0].toUpperCase() + unformatted.substring(1);
@@ -51,16 +50,7 @@ Map<String, List<String>> images = {
     "ballon",
     "hamster"
   ],*/
-  "Kapitel 1": [
-    "Oma",
-    "Opa",
-    "Wal",
-    "Ufo",
-    "Hut",
-    "Hose",
-    "Hase",
-    "Nase"
-  ],
+  "Kapitel 1": ["Oma", "Opa", "Wal", "Ufo", "Hut", "Hose", "Hase", "Nase"],
   "Kapitel 2": [
     "Sofa",
     "Brot",
@@ -105,24 +95,7 @@ Map<String, List<String>> images = {
     "Schleife",
     "Leine"
   ],
-  "Kapitel 8 Eu": [
-    "Eule",
-    "Neun",
-    "Euro",
-    "Kreuz",
-    "Feuer"
-  ],
-  "Kapitel 9 nk": [
-    "Bank",
-    "Anker",
-    "Schrank",
-    "Geschenk"
-  ],
-  "Kapitel 10 st": [
-    "Stein",
-    "Stift",
-    "Stelzen",
-    "Stempel",
-    "Stern"
-  ]
+  "Kapitel 8 Eu": ["Eule", "Neun", "Euro", "Kreuz", "Feuer"],
+  "Kapitel 9 nk": ["Bank", "Anker", "Schrank", "Geschenk"],
+  "Kapitel 10 st": ["Stein", "Stift", "Stelzen", "Stempel", "Stern"]
 };
