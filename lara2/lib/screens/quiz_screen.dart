@@ -117,7 +117,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
           title: Text(setup.getChapterName(widget.index)),
           centerTitle: true,
           bottom: ChapterProgressBar(
-            value: 1 - picturesToLearn.length / getImageList(index).length,
+            value: 1 - picturesToLearn.length / getImageList(widget.index).length,
           ),
         ),
         body: Center(
