@@ -76,7 +76,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
       if (!didNoMistake) errors++;
       picturesToLearn.removeAt(currentImageIndex);
       if (picturesToLearn.isEmpty) {
-        globals.chapterMistakes[setup.getChapterName(index)] = errors;
+        globals.chapterMistakes[setup.getChapterTitle(widget.index)] = errors;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -183,7 +183,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
                                   if(widget.developerMode){
                                     updateImage();
                                   }
-                                  Timer(const Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
+                                  Timer(Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
                                     updateImage();
                                   });
                                 } else {
