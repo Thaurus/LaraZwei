@@ -21,7 +21,7 @@ Map<Map<String, dynamic>, List<String>> images = {
     "Wolke",
     "Pirat"
   ],
-  {"title": "Kapitel 3 Sch", "subtitle": "Wörter mit Sch"}: [
+  {"title": "Kapitel 3", "subtitle": "Wörter mit Sch"}: [
     "Schaf",
     "Schal",
     "Schere",
@@ -33,7 +33,7 @@ Map<Map<String, dynamic>, List<String>> images = {
     "Frosch",
     "Flasche"
   ],
-{"title": "Kapitel 4 Au", "subtitle": "Wörter mit Au"}: [
+{"title": "Kapitel 4", "subtitle": "Wörter mit Au"}: [
     "Auto",
     "Auge",
     "Baum",
@@ -43,7 +43,7 @@ Map<Map<String, dynamic>, List<String>> images = {
     "Maus",
     "Zaun"
   ],
-{"title": "Kapitel 5 Ei", "subtitle": "Wörter mit Ei"}: [
+{"title": "Kapitel 5", "subtitle": "Wörter mit Ei"}: [
     "Ei",
     "Eis",
     "Eimer",
@@ -55,7 +55,7 @@ Map<Map<String, dynamic>, List<String>> images = {
     "Schleife",
     "Leine"
   ],
-{"title": "Kapitel 8 Eu", "subtitle": "Wörter mit Eu"}: ["Eule", "Neun", "Euro", "Kreuz", "Feuer"],
-{"title": "Kapitel 9 nk", "subtitle": "Wörter mit nk"}: ["Bank", "Anker", "Schrank", "Geschenk"],
-{"title": "Kapitel 10 st", "subtitle": "Wörter mit st"}: ["Stein", "Stift", "Stelzen", "Stempel", "Stern"]
+{"title": "Kapitel 8", "subtitle": "Wörter mit Eu"}: ["Eule", "Neun", "Euro", "Kreuz", "Feuer"],
+{"title": "Kapitel 9", "subtitle": "Wörter mit nk"}: ["Bank", "Anker", "Schrank", "Geschenk"],
+{"title": "Kapitel 10", "subtitle": "Wörter mit st"}: ["Stein", "Stift", "Stelzen", "Stempel", "Stern"]
 };
