@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:lara2/chapter_progress_bar.dart';
+
 import 'setup.dart' as setup;
 import 'package:flutter/material.dart';
 import 'finish_screen.dart';
@@ -113,6 +115,9 @@ class _QuizScreenState extends State<QuizScreen> {
         appBar: AppBar(
           title: Text(setup.getChapterName(index)),
           centerTitle: true,
+          bottom: ChapterProgressBar(
+            value: 1 - picturesToLearn.length / getImageList(index).length,
+          ),
         ),
         body: Center(
           child: Container(
