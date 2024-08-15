@@ -39,11 +39,13 @@ class _StatsAndSettingsScreenState extends State<StatsAndSettingsScreen> {
                   const [
                     DataColumn(label: Text('Kapitel')),
                     DataColumn(label: Text('Anzahl Fehler')),
+                    DataColumn(label: Text('Anzahl verwendete Tipps')),
                   ],
-                  rows: globals.finishedChapters.map((chapter) {
+                  rows: globals.chapterMistakesAndHint.entries.map((chapter) {
                     return DataRow(cells: [
-                      DataCell(Text(chapter)),
-                      DataCell(Text(globals.chapterMistakes[chapter].toString())),
+                      DataCell(Text(chapter.key)),
+                      DataCell(Text(chapter.value["errors"].toString())),
+                      DataCell(Text(chapter.value["hints"].toString())),
                     ]);
                   }).toList(),
                 ),
@@ -77,6 +79,49 @@ class _StatsAndSettingsScreenState extends State<StatsAndSettingsScreen> {
                             onChanged: (value) {
                               setState(() {
                                 globals.playSound = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        TableCell(
+                          child: Row(
+                            children: [
+                              const Text('Erlaube Tipps'),
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text('Tipps erlauben'),
+                                        content: const Text('Wenn Tipps erlaubt sind, kann der nächste Buchstabe gelöst werden. In den Statistiken wird angezeigt, wie oft Tipps verwendet wurden.'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                icon: const Icon(Icons.info),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TableCell(
+                          child: Switch(
+                            value: globals.allowHints,
+                            onChanged: (value) {
+                              setState(() {
+                                globals.allowHints = value;
                               });
                             },
                           ),

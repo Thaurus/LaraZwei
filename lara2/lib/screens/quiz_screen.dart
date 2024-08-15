@@ -27,6 +27,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
   bool didNoMistake = true;
   final AudioPlayer audioPlayer = AudioPlayer();
   int errors = 0;
+  int hints = 0;
   bool isPlaying = false;
   late AnimationController animationController;
 
@@ -76,7 +77,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
       if (!didNoMistake) errors++;
       picturesToLearn.removeAt(currentImageIndex);
       if (picturesToLearn.isEmpty) {
-        globals.chapterMistakes[setup.getChapterTitle(widget.index)] = errors;
+        globals.chapterMistakesAndHint[setup.getChapterTitle(widget.index)] = {"errors": errors, "hints": hints};
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -113,8 +114,8 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
     return GestureDetector(      
       onTap: () {
         int index = _controllers.indexWhere((element) => element.text.isEmpty);
-        if (index != -1 && !_focusNodes[widget.index].hasFocus) {
-          _focusNodes[widget.index].requestFocus();
+        if (index != -1 && !_focusNodes[index].hasFocus) {
+          _focusNodes[index].requestFocus();
         }
       },
       child: Scaffold(
@@ -128,79 +129,117 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
         body: Center(
           child: Container(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Image.asset(
-                    "assets/images/${getCategory(widget.index)}/${currentWord()}.png",
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                Expanded(
-                  child: ShakeAnimator(
-                    controller: animationController,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: currentWord().length,
-                      itemBuilder: (context, index) {
-                        String char = currentWord()[index];
-                        return Container(
-                          width: 50,
-                          margin: const EdgeInsets.all(5),
-                          child: AbsorbPointer(
-                            child: TextField(
-                              controller: _controllers[index],
-                              maxLength: 1,
-                              textAlign: TextAlign.center,
-                              focusNode: _focusNodes[index],
-                              decoration: InputDecoration(
-                                counterText: '',
-                                focusedBorder: OutlineInputBorder(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: constraints.maxHeight * 0.5,
+                      child: Image.asset(
+                        "assets/images/${getCategory(widget.index)}/${currentWord()}.png",
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ShakeAnimator(
+                          controller: animationController,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                            for (int index = 0; index < currentWord().length; index++)
+                              Container(
+                              width: 50,
+                              margin: const EdgeInsets.all(5),
+                              child: AbsorbPointer(
+                                child: TextField(
+                                controller: _controllers[index],
+                                maxLength: 1,
+                                textAlign: TextAlign.center,
+                                focusNode: _focusNodes[index],
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                  focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: _borderColors[index]),
-                                ),
-                                enabledBorder: OutlineInputBorder(
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: _borderColors[index]),
+                                  ),
+                                  border: const OutlineInputBorder(),
                                 ),
-                                border: const OutlineInputBorder(),
-                              ),
-                              onChanged: (value) async {
-                                _controllers[index].text = value.toUpperCase();
-                            
-                                // Test if the user input is correct
-                                if (char.toLowerCase() != value.toLowerCase()) {
+                                onChanged: (value) async {
+                                  _controllers[index].text = value.toUpperCase();
+                    
+                                  // Test if the user input is correct
+                                  if (currentWord()[index].toLowerCase() != value.toLowerCase()) {
                                   _borderColors[index] = Colors.red;
-                                  if(globals.playSound) playSound();
+                                  if (globals.playSound) playSound();
                                   _controllers[index].text = "";
                                   didNoMistake = false;
                                   animationController.forward(from: 0.0);
-                                  if(globals.playSound) playSound();
-                                } else if(index == currentWord().length - 1) {
+                                  if (globals.playSound) playSound();
+
+                                  } else if (index == currentWord().length - 1) {
                                   _borderColors[index] = Colors.green;
                                   _focusNodes[index].unfocus();
-                                  if(widget.developerMode){
+                                  if (widget.developerMode) {
                                     updateImage();
                                   }
-                                  Timer(Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
+                                  Timer(Duration(milliseconds: (globals.secondsToWait * 1000).round()), () {
                                     updateImage();
                                   });
-                                } else {
+                                  } else {
                                   _borderColors[index] = Colors.green;
                                   _focusNodes[index].unfocus();
                                   _focusNodes[index + 1].requestFocus();
-                                }
-                                setState(() {});
-                              },
-                            ),
+                                  }
+                                  setState(() {});
+                                },
+                                ),
+                              ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
+                        ),
+                        if (globals.allowHints)
+                        IconButton(onPressed: (){
+                          int nextEmptyFieldIndex = _controllers.indexWhere((element) => element.text.isEmpty);
+                          if(nextEmptyFieldIndex == -1) return;
+                          hints++;
+                          String nextChar = currentWord()[nextEmptyFieldIndex];
+                          print(nextChar);
+                          setState(() {
+                            _controllers[nextEmptyFieldIndex].text = nextChar.toUpperCase();
+                            _borderColors[nextEmptyFieldIndex] = Colors.yellow;
+                            _focusNodes[nextEmptyFieldIndex].unfocus();
+                            
+                            if(nextEmptyFieldIndex >= currentWord().length - 1){
+                              if (widget.developerMode) {
+                                updateImage();
+                              }
+                              Timer(Duration(milliseconds: (globals.secondsToWait * 1000).round()), () {
+                                updateImage();
+                              });
+                            }
+                            else {
+                              _focusNodes[nextEmptyFieldIndex + 1].requestFocus();
+                            }
+                          });
+                        }
+                        , icon: const Icon(Icons.lightbulb, color: Colors.amber)),
+                      ],
                     ),
-                  ),
-                ),
-              ],
+
+                    
+                  ],
+                );
+              }
             ),
           ),
         ),
