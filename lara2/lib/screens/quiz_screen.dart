@@ -101,7 +101,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
     if (!(index >= 0 && index < setup.images.length)) {
       return [];
     }
-    return List.from(setup.images[getCategory(index)]!);
+    return List.from(setup.images.values.toList()[index]);
   }
 
   @override

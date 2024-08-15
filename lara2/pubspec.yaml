@@ -67,12 +67,12 @@ flutter:
     - assets/images/schwer/
     - assets/images/Kapitel 1/
     - assets/images/Kapitel 2/
-    - assets/images/Kapitel 3 Sch/
-    - assets/images/Kapitel 4 Au/
-    - assets/images/Kapitel 5 Ei/
-    - assets/images/Kapitel 8 Eu/
-    - assets/images/Kapitel 9 nk/
-    - assets/images/Kapitel 10 st/
+    - assets/images/Kapitel 3/
+    - assets/images/Kapitel 4/
+    - assets/images/Kapitel 5/
+    - assets/images/Kapitel 8/
+    - assets/images/Kapitel 9/
+    - assets/images/Kapitel 10/
     - assets/images/
     - assets/sounds/
   # To add assets to your application, add an assets section, like this:
