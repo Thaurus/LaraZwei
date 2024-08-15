@@ -228,16 +228,17 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                           print(nextChar);
                           setState(() {
                             _controllers[nextEmptyFieldIndex].text = nextChar.toUpperCase();
-                            _borderColors[nextEmptyFieldIndex] = Colors.yellow;
+                            _borderColors[nextEmptyFieldIndex] = Colors.amber;
                             _focusNodes[nextEmptyFieldIndex].unfocus();
-                            
                             if(nextEmptyFieldIndex >= currentWord().length - 1){
+                            loadingAnimationController.forward(from: 0.0);
                               if (widget.developerMode) {
                                 updateImage();
                               }
                               Timer(Duration(milliseconds: (globals.secondsToWait * 1000).round()), () {
                                 updateImage();
                               });
+
                             }
                             else {
                               _focusNodes[nextEmptyFieldIndex + 1].requestFocus();
@@ -247,16 +248,14 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                         , icon: const Icon(Icons.lightbulb, color: Colors.amber)),
                       ],
                     ),
-                  ),
-                ),
-                SizedBox(height: 30, child: LinearProgressIndicator(
+                    SizedBox(height: 30, child: LinearProgressIndicator(
                 value: loadingAnimationController.value,
-              ),)
-              ],
+              ),)]
+                  );
+  }),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
