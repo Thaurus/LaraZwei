@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:lara2/chapter_progress_bar.dart';
 import 'package:lara2/shake_animator.dart';
 
 import 'setup.dart' as setup;
@@ -115,6 +116,9 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
         appBar: AppBar(
           title: Text(setup.getChapterName(widget.index)),
           centerTitle: true,
+          bottom: ChapterProgressBar(
+            value: 1 - picturesToLearn.length / getImageList(index).length,
+          ),
         ),
         body: Center(
           child: Container(
