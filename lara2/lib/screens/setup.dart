@@ -1,57 +1,17 @@
-String getChapterName(int index) {
-  String unformatted = images.keys.toList()[index];
-  return unformatted[0].toUpperCase() + unformatted.substring(1);
+String getChapterTitle(int index) {
+  return images.keys.toList()[index]["title"];
 }
+String getChapterSubtitle(int index) {
+  return images.keys.toList()[index]["subtitle"];
+}
+/*String getChapterColor(int index) {
+  return images.keys.toList()[index]["title"];
+}*/
 
-Map<String, List<String>> images = {
-  /*"einfach": [
-    "affe",
-    "hund",
-    "lila",
-    "oma",
-    "haus",
-    "buch",
-    "baum",
-    "hand",
-    "ei",
-    "hase",
-    "maus",
-    "auto",
-    "ball",
-    "apfel"
-  ],
-  "mittel": [
-    "fisch",
-    "katze",
-    "vogel",
-    "tasse",
-    "flasche",
-    "stuhl",
-    "schuh",
-    "blume",
-    "keks",
-    "wurm",
-    "stern",
-    "stein",
-    "brot"
-  ],
-  "schwer": [
-    "fuchs",
-    "panda",
-    "kerze",
-    "kamera",
-    "schiff",
-    "lampe",
-    "schwamm",
-    "gitarre",
-    "kuchen",
-    "trampolin",
-    "fahrrad",
-    "ballon",
-    "hamster"
-  ],*/
-  "Kapitel 1": ["Oma", "Opa", "Wal", "Ufo", "Hut", "Hose", "Hase", "Nase"],
-  "Kapitel 2": [
+
+Map<Map<String, dynamic>, List<String>> images = {
+  {"title": "Kapitel 1", "subtitle": "Einfacher Start"}: ["Oma", "Opa", "Wal", "Ufo", "Hut", "Hose", "Hase", "Nase"],
+  {"title": "Kapitel 2", "subtitle": "Jetzt wird's knifflig"}: [
     "Sofa",
     "Brot",
     "Lego",
@@ -61,7 +21,7 @@ Map<String, List<String>> images = {
     "Wolke",
     "Pirat"
   ],
-  "Kapitel 3 Sch": [
+  {"title": "Kapitel 3 Sch", "subtitle": "Wörter mit Sch"}: [
     "Schaf",
     "Schal",
     "Schere",
@@ -73,7 +33,7 @@ Map<String, List<String>> images = {
     "Frosch",
     "Flasche"
   ],
-  "Kapitel 4 Au": [
+{"title": "Kapitel 4 Au", "subtitle": "Wörter mit Au"}: [
     "Auto",
     "Auge",
     "Baum",
@@ -83,7 +43,7 @@ Map<String, List<String>> images = {
     "Maus",
     "Zaun"
   ],
-  "Kapitel 5 Ei": [
+{"title": "Kapitel 5 Ei", "subtitle": "Wörter mit Ei"}: [
     "Ei",
     "Eis",
     "Eimer",
@@ -95,7 +55,7 @@ Map<String, List<String>> images = {
     "Schleife",
     "Leine"
   ],
-  "Kapitel 8 Eu": ["Eule", "Neun", "Euro", "Kreuz", "Feuer"],
-  "Kapitel 9 nk": ["Bank", "Anker", "Schrank", "Geschenk"],
-  "Kapitel 10 st": ["Stein", "Stift", "Stelzen", "Stempel", "Stern"]
+{"title": "Kapitel 8 Eu", "subtitle": "Wörter mit Eu"}: ["Eule", "Neun", "Euro", "Kreuz", "Feuer"],
+{"title": "Kapitel 9 nk", "subtitle": "Wörter mit nk"}: ["Bank", "Anker", "Schrank", "Geschenk"],
+{"title": "Kapitel 10 st", "subtitle": "Wörter mit st"}: ["Stein", "Stift", "Stelzen", "Stempel", "Stern"]
 };

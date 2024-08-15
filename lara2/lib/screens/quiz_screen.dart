@@ -94,7 +94,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
 
   String currentWord() => picturesToLearn[currentImageIndex];
   String getCategory(int index) {
-    return setup.images.keys.toList()[index];
+    return setup.getChapterTitle(index);
   }
 
   List<String> getImageList(int index) {
@@ -114,7 +114,7 @@ class _QuizScreenState extends State<QuizScreen> with SingleTickerProviderStateM
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(setup.getChapterName(widget.index)),
+          title: Text(setup.getChapterTitle(widget.index)),
           centerTitle: true,
           bottom: ChapterProgressBar(
             value: 1 - picturesToLearn.length / getImageList(widget.index).length,

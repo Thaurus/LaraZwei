@@ -29,28 +29,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Such dir ein Kapitel aus und leg los!',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
                   SizedBox(height: 20),
                   Container(
-                      height: MediaQuery.of(context).size.height / 2,
-                      width: MediaQuery.of(context).size.width / 2,
+                      height: MediaQuery.of(context).size.height / 1.3,
+                      width: MediaQuery.of(context).size.width / 1.3,
                       child: GridView.builder(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
+                            crossAxisCount: 4,
                             // Number of columns
                             crossAxisSpacing: 16.0,
                             // Horizontal space between buttons
                             mainAxisSpacing: 16.0,
                             // Vertical space between buttons
                             childAspectRatio:
-                                3 / 1, // Width/Height ratio of buttons
+                                2 / 1, // Width/Height ratio of buttons
                           ),
                           itemCount: setup.images.length,
                           itemBuilder: (context, index) {
+                            return LayoutBuilder(
+                            builder: (context, constraints) {
+                            double fontSizeTitle = constraints.maxHeight * 0.2;
+                            double fontSizeSubtitle = constraints.maxHeight * 0.1;
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(
@@ -75,22 +75,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    setup.getChapterName(index),
+                                    setup.getChapterTitle(index),
                                     style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: fontSizeTitle,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white),
+                                      overflow: TextOverflow.ellipsis
                                   ),
+
                                   SizedBox(height: 5),
                                   Text(
-                                    setup.getChapterName(index),
+                                    setup.getChapterSubtitle(index),
                                     style: TextStyle(
-                                        fontSize: 16, color: Colors.white),
+                                        fontSize: fontSizeSubtitle, color: Colors.white),
+                                      overflow: TextOverflow.ellipsis
                                   ),
                                 ],
                               ),
                             );
-                          }))
+                          }
+                          );
+                          }
+                          )
+                  )
                 ]),
           ),
           Positioned(

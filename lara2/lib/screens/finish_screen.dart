@@ -175,7 +175,7 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
         child: Column(
           children: [
             Text(
-              'Du hast Kategorie ${setup.getChapterName(index)} geschafft! Zeig das deiner Lehrkraft :)',
+              'Du hast ${setup.getChapterTitle(index)} geschafft! Zeig das deiner Lehrkraft :)',
               style: TextStyle(fontSize: 24),
             ),
             ElevatedButton(
