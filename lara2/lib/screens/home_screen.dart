@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lara2/screens/stats_and_settings_screen.dart';
+import 'package:lara2/screens/teacher_screen.dart';
 import 'quiz_screen.dart';
 import '../setup/setup.dart' as setup;
 import '../setup/globals.dart' as globals;
@@ -17,6 +18,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          // Teacher Screen
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const TeacherScreen()));
+          }, icon: const Icon(Icons.school)),
           IconButton(
             icon: const Icon(Icons.bar_chart),
             onPressed: () {

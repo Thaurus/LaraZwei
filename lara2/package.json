@@ -1,0 +1,19 @@
+{
+  "name": "lara2",
+  "version": "1.0.0",
+  "description": "lara2.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^10.13.0"
+  }
+}
