@@ -1,26 +1,28 @@
 import 'dart:async';
-import 'package:lara2/chapter_progress_bar.dart';
-import 'package:lara2/shake_animator.dart';
+import 'package:lara2/widgets/chapter_progress_bar.dart';
+import 'package:lara2/widgets/shake_animator.dart';
 
-import 'setup.dart' as setup;
+import '../setup/setup.dart' as setup;
 import 'package:flutter/material.dart';
 import 'finish_screen.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:lara2/globals.dart' as globals;
+import 'package:lara2/setup/globals.dart' as globals;
 
 class QuizScreen extends StatefulWidget {
   final int index;
-  final bool developerMode;
-  const QuizScreen(this.index, this.developerMode, {super.key});
+  const QuizScreen(this.index, {super.key});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
+  // For text word field
   List<TextEditingController> _controllers = [];
   List<Color> _borderColors = [];
   List<FocusNode> _focusNodes = [];
+  late AnimationController animationController;
+  late AnimationController loadingAnimationController;
 
   List<String> picturesToLearn = [];
   int currentImageIndex = 0;
@@ -29,9 +31,6 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   int errors = 0;
   int hints = 0;
   bool isPlaying = false;
-  late AnimationController animationController;
-  late AnimationController loadingAnimationController;
-
 
   @override
   void initState() {
@@ -40,11 +39,8 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       setState(() {});
     });
     animationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-
-
-
     picturesToLearn = getImageList(widget.index);
-    if (widget.developerMode) {
+    if (globals.developerMode) {
       picturesToLearn = picturesToLearn.sublist(0,2);
     }
     update();
@@ -75,9 +71,9 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
 
   void update(){
     loadingAnimationController.reset();
-    _controllers = List.generate(currentWord().length, (index) => TextEditingController());
-    _focusNodes = List.generate(currentWord().length, (index) => FocusNode());
-    _borderColors = List.generate(currentWord().length, (index) => Colors.black);
+    _controllers = List.generate(currentWord.length, (index) => TextEditingController());
+    _focusNodes = List.generate(currentWord.length, (index) => FocusNode());
+    _borderColors = List.generate(currentWord.length, (index) => Colors.black);
     didNoMistake = true;
     _focusNodes[0].requestFocus();
   }
@@ -107,8 +103,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
 
   }
 
-
-  String currentWord() => picturesToLearn[currentImageIndex];
+  String get currentWord => picturesToLearn[currentImageIndex];
   String getCategory(int index) {
     return setup.getChapterTitle(index);
   }
@@ -118,6 +113,70 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       return [];
     }
     return List.from(setup.images.values.toList()[index]);
+  }
+
+  Widget wordTextField(){
+    return ShakeAnimator(
+      controller: animationController,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        for (int index = 0; index < currentWord.length; index++)
+          Container(
+          width: 50,
+          margin: const EdgeInsets.all(5),
+          child: AbsorbPointer(
+            child: TextField(
+            controller: _controllers[index],
+            maxLength: 1,
+            textAlign: TextAlign.center,
+            focusNode: _focusNodes[index],
+            decoration: InputDecoration(
+              counterText: '',
+              focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: _borderColors[index]),
+              ),
+              enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: _borderColors[index]),
+              ),
+              border: const OutlineInputBorder(),
+            ),
+            onChanged: (value) async {
+              _controllers[index].text = value.toUpperCase();
+
+              // Test if the user input is correct
+              if (currentWord[index].toLowerCase() != value.toLowerCase()) {
+              _borderColors[index] = Colors.red;
+              if (globals.playSound) playSound();
+              _controllers[index].text = "";
+              didNoMistake = false;
+              animationController.forward(from: 0.0);
+              if (globals.playSound) playSound();
+
+              } else if (index == currentWord.length - 1) {
+              _borderColors[index] = Colors.green;
+              _focusNodes[index].unfocus();
+              if (globals.developerMode) {
+                updateImage();
+              }
+              loadingAnimationController.forward(from: 0.0);
+              Future.delayed(Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
+                updateImage();
+              });
+              } else {
+              _borderColors[index] = Colors.green;
+              _focusNodes[index].unfocus();
+              _focusNodes[index + 1].requestFocus();
+              }
+              setState(() {});
+            },
+            ),
+          ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -150,7 +209,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                     SizedBox(
                       height: constraints.maxHeight * 0.5,
                       child: Image.asset(
-                        "assets/images/${getCategory(widget.index)}/${currentWord()}.png",
+                        "assets/images/${getCategory(widget.index)}/$currentWord.png",
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -158,81 +217,20 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ShakeAnimator(
-                          controller: animationController,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                            for (int index = 0; index < currentWord().length; index++)
-                              Container(
-                              width: 50,
-                              margin: const EdgeInsets.all(5),
-                              child: AbsorbPointer(
-                                child: TextField(
-                                controller: _controllers[index],
-                                maxLength: 1,
-                                textAlign: TextAlign.center,
-                                focusNode: _focusNodes[index],
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                  focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: _borderColors[index]),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: _borderColors[index]),
-                                  ),
-                                  border: const OutlineInputBorder(),
-                                ),
-                                onChanged: (value) async {
-                                  _controllers[index].text = value.toUpperCase();
-                    
-                                  // Test if the user input is correct
-                                  if (currentWord()[index].toLowerCase() != value.toLowerCase()) {
-                                  _borderColors[index] = Colors.red;
-                                  if (globals.playSound) playSound();
-                                  _controllers[index].text = "";
-                                  didNoMistake = false;
-                                  animationController.forward(from: 0.0);
-                                  if (globals.playSound) playSound();
-
-                                  } else if (index == currentWord().length - 1) {
-                                  _borderColors[index] = Colors.green;
-                                  _focusNodes[index].unfocus();
-                                  if (widget.developerMode) {
-                                    updateImage();
-                                  }
-                                  loadingAnimationController.forward(from: 0.0);
-                                  Future.delayed(Duration(milliseconds: (globals.secondsToWait*1000).round()), () {
-                                    updateImage();
-                                  });
-                                  } else {
-                                  _borderColors[index] = Colors.green;
-                                  _focusNodes[index].unfocus();
-                                  _focusNodes[index + 1].requestFocus();
-                                  }
-                                  setState(() {});
-                                },
-                                ),
-                              ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        wordTextField(),
                         if (globals.allowHints)
                         IconButton(onPressed: (){
                           int nextEmptyFieldIndex = _controllers.indexWhere((element) => element.text.isEmpty);
                           if(nextEmptyFieldIndex == -1) return;
                           hints++;
-                          String nextChar = currentWord()[nextEmptyFieldIndex];
-                          print(nextChar);
+                          String nextChar = currentWord[nextEmptyFieldIndex];
                           setState(() {
                             _controllers[nextEmptyFieldIndex].text = nextChar.toUpperCase();
                             _borderColors[nextEmptyFieldIndex] = Colors.amber;
                             _focusNodes[nextEmptyFieldIndex].unfocus();
-                            if(nextEmptyFieldIndex >= currentWord().length - 1){
+                            if(nextEmptyFieldIndex >= currentWord.length - 1){
                             loadingAnimationController.forward(from: 0.0);
-                              if (widget.developerMode) {
+                              if (globals.developerMode) {
                                 updateImage();
                               }
                               Timer(Duration(milliseconds: (globals.secondsToWait * 1000).round()), () {
