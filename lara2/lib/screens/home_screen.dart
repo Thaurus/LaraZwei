@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                backgroundColor: Colors.blue[200 + index * 100],
+                                backgroundColor: setup.getChapterColor(index),
                                 elevation: 2.0,
                               ),
                               onPressed: () {
