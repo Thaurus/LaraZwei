@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lara2/globals.dart' as globals;
+import 'package:lara2/setup/globals.dart' as globals;
 
 class StatsAndSettingsScreen extends StatefulWidget {
   final int initTab;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lara2/screens/stats_and_settings_screen.dart';
 import 'quiz_screen.dart';
-import 'setup.dart' as setup;
+import '../setup/setup.dart' as setup;
+import '../setup/globals.dart' as globals;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,15 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool developerMode = false;
-  Color _buttonColor = Colors.grey;
-
-  void _updateButtonColor() {
-    setState(() {
-      _buttonColor = _buttonColor == Colors.grey ? Colors.red : Colors.grey;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 20),
-                  Container(
+                  const SizedBox(height: 20),
+                  SizedBox(
                       height: MediaQuery.of(context).size.height / 1.3,
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: GridView.builder(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             // Number of columns
                             crossAxisSpacing: 16.0,
@@ -70,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             double fontSizeSubtitle = constraints.maxHeight * 0.1;
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 10.0, horizontal: 16.0),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -83,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        QuizScreen(index, developerMode),
+                                        QuizScreen(index),
                                   ),
                                 );
                               },
@@ -100,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       overflow: TextOverflow.ellipsis
                                   ),
 
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
                                     setup.getChapterSubtitle(index),
                                     style: TextStyle(
@@ -122,13 +114,14 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: 20.0,
             right: 20.0,
             child: FloatingActionButton(
-              backgroundColor: _buttonColor,
+              backgroundColor: globals.developerMode ? Colors.red : Colors.grey,
               onPressed: () {
-                developerMode = !developerMode;
-                _updateButtonColor();
+                setState(() {
+                  globals.developerMode = !globals.developerMode;  
+                });
               },
-              child: Icon(Icons.add),
               mini: true, // Makes the button small
+              child: const Icon(Icons.add),
             ),
           ),
         ],
