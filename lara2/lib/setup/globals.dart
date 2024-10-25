@@ -1,7 +1,7 @@
 import '../setup/setup.dart' as setup;
 // Settings
 bool playSound = true;
-double secondsToWait = 0;
+double secondsToWait = 2;
 bool allowHints = true;
 bool easyMode = false;
 bool developerMode = false;
