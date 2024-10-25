@@ -213,7 +213,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                 1 - picturesToLearn.length / getImageList(widget.index).length,
           ),
         ),
-        body: Center(
+        body: picturesToLearn.isEmpty ? Container() : Center(
           child: Container(
             padding: const EdgeInsets.all(16.0),
             child: LayoutBuilder(builder: (context, constraints) {
