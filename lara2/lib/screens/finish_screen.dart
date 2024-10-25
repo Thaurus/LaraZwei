@@ -85,7 +85,7 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
                 fit: BoxFit.contain,
               ),
             ),
-            SizedBox(height: 50,),
+            SizedBox(height: 50),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
