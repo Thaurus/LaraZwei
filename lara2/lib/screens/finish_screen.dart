@@ -71,12 +71,31 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
     return Scaffold(
       body: Center(
         child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Du hast ${setup.getChapterTitle(widget.index)} geschafft! Zeig das deiner Lehrkraft :)',
-              style: const TextStyle(fontSize: 24),
+              setup.getChapterTitle(widget.index),
+              style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
             ),
+            SizedBox(
+              height: 200,
+              child: Image.asset(
+                "assets/images/Done.png",
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(height: 50),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                backgroundColor:  Color(0xFF6D7881),
+                elevation: 2.0,
+              ),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -84,7 +103,10 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
                   (route) => route.isFirst,
                 );
               },
-              child: const Text('Zurück zur Auswahl'),
+              child: const Text('Zurück zum Anfang', style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.white)),
             ),
           CustomPaint(
           painter: FireworkPainter(_fireworks),

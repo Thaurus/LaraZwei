@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lara2/screens/stats_and_settings_screen.dart';
+import '../setup/globals.dart';
 import 'quiz_screen.dart';
 import '../setup/setup.dart' as setup;
 import '../setup/globals.dart' as globals;
@@ -12,21 +13,47 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
+  void _showInformationPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Informationen für Eltern und Lehrkräfte"),
+          content: const Text(
+              "Diese App wurde speziell entwickelt, um Kinder spielerisch und systematisch beim Schreibenlernen zu unterstützen. Der Fokus liegt auf lautgetreuen Wörtern – also Wörtern, die so geschrieben werden, wie sie gesprochen werden. Das erleichtert den Einstieg in die Welt des Schreibens, da Kinder Buchstaben und Laute direkt miteinander verknüpfen können.."
+                  "\n"
+                  "\n"
+                  "Icons von Freepik"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Schließen"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.bar_chart),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen(initTab: 0)));
-            },
+            icon: const Icon(Icons.info_rounded),
+            onPressed: _showInformationPopup
           ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswordProtectedScreen(initTab: 1)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const PasswordProtectedScreen(initTab: 1)));
             },
           ),
         ],
@@ -40,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const SizedBox(height: 20),
                   SizedBox(
-                      height: MediaQuery.of(context).size.height / 1.3,
-                      width: MediaQuery.of(context).size.width / 1.3,
+                      height: MediaQuery.of(context).size.height / 1.4,
+                      width: MediaQuery.of(context).size.width / 1.4,
                       child: GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -57,72 +84,52 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: setup.images.length,
                           itemBuilder: (context, index) {
                             return LayoutBuilder(
-                            builder: (context, constraints) {
-                            double fontSizeTitle = constraints.maxHeight * 0.2;
-                            double fontSizeSubtitle = constraints.maxHeight * 0.1;
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 16.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
+                                builder: (context, constraints) {
+                              double fontSizeTitle =
+                                  constraints.maxHeight * 0.2;
+                              double fontSizeSubtitle =
+                                  constraints.maxHeight * 0.1;
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 16.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  backgroundColor: getChapterAlreadyFinished(index) ? Color(0x66666666): setup.getChapterColor(index),
+                                  elevation: 2.0,
                                 ),
-                                backgroundColor: setup.getChapterColor(index),
-                                elevation: 2.0,
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        QuizScreen(index),
-                                  ),
-                                );
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    setup.getChapterTitle(index),
-                                    style: TextStyle(
-                                        fontSize: fontSizeTitle,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                      overflow: TextOverflow.ellipsis
-                                  ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => QuizScreen(index),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(setup.getChapterTitle(index),
+                                        style: TextStyle(
+                                            fontSize: fontSizeTitle,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                        overflow: TextOverflow.ellipsis),
+                                    const SizedBox(height: 5),
+                                    Text(setup.getChapterSubtitle(index),
+                                        style: TextStyle(
+                                            fontSize: fontSizeSubtitle,
+                                            color: Colors.white),
+                                        overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
 
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    setup.getChapterSubtitle(index),
-                                    style: TextStyle(
-                                        fontSize: fontSizeSubtitle, color: Colors.white),
-                                      overflow: TextOverflow.ellipsis
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                          );
-                          }
-                          )
-                  )
+                              );
+                            });
+                          }))
                 ]),
-          ),
-          Positioned(
-            //Developer button
-            bottom: 20.0,
-            right: 20.0,
-            child: FloatingActionButton(
-              backgroundColor: globals.developerMode ? Colors.red : Colors.grey,
-              onPressed: () {
-                setState(() {
-                  globals.developerMode = !globals.developerMode;  
-                });
-              },
-              mini: true, // Makes the button small
-              child: const Icon(Icons.add),
-            ),
           ),
         ],
       ),

@@ -8,9 +8,7 @@ class Firework {
   bool isFinished = false;
 
   Firework(Size screenSize)
-      : position = Offset(
-      Random().nextDouble() * screenSize.width,
-      Random().nextDouble() * screenSize.height / 2),
+      : position = Offset((Random().nextBool() ? Random().nextDouble() * screenSize.width*0.25 : Random().nextDouble() * screenSize.width*0.25 + screenSize.width*0.75), Random().nextDouble() * screenSize.height - screenSize.height/1.8),
         color = Color.fromARGB(
           255,
           Random().nextInt(256),
@@ -21,7 +19,7 @@ class Firework {
           100,
               (index) => Particle(
             direction: Random().nextDouble() * 2 * pi,
-            speed: Random().nextDouble() * 2 + 1,
+            speed: Random().nextDouble() * 1 + 1,
             color: Color.fromARGB(
               255,
               Random().nextInt(256),

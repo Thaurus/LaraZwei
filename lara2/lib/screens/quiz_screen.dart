@@ -223,6 +223,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                           int nextEmptyFieldIndex = _controllers.indexWhere((element) => element.text.isEmpty);
                           if(nextEmptyFieldIndex == -1) return;
                           hints++;
+                          didNoMistake = false;
                           String nextChar = currentWord[nextEmptyFieldIndex];
                           setState(() {
                             _controllers[nextEmptyFieldIndex].text = nextChar.toUpperCase();
