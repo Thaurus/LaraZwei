@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -16,7 +15,8 @@ class FinishScreen extends StatefulWidget {
   State<FinishScreen> createState() => _FinishScreenState();
 }
 
-class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderStateMixin{
+class _FinishScreenState extends State<FinishScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   final List<Firework> _fireworks = [];
 
@@ -24,13 +24,13 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
   late Size _screenSize;
 
   void playSound() async {
-      await audioPlayer.play('assets/sounds/finish.mp3');
+    await audioPlayer.play('assets/sounds/finish.mp3');
   }
 
   @override
   void initState() {
     super.initState();
-    if(globals.playSound) playSound();
+    if (globals.playSound) playSound();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3),
@@ -60,6 +60,7 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
       }
     });
   }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -73,48 +74,49 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              setup.getChapterTitle(widget.index),
-              style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold, color: Color(0xFF333333)),
-            ),
-            SizedBox(
-              height: 200,
-              child: Image.asset(
-                "assets/images/Done.png",
-                fit: BoxFit.contain,
+            children: [
+              Text(
+                setup.getChapterTitle(widget.index),
+                style: const TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF333333)),
               ),
-            ),
-            SizedBox(height: 50),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 16.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
+              SizedBox(
+                height: 200,
+                child: Image.asset(
+                  "assets/images/Done.png",
+                  fit: BoxFit.contain,
                 ),
-                backgroundColor:  Color(0xFF6D7881),
-                elevation: 2.0,
               ),
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  (route) => route.isFirst,
-                );
-              },
-              child: const Text('Zurück zum Anfang', style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.white)),
-            ),
-          CustomPaint(
-          painter: FireworkPainter(_fireworks),
-          child: Container(),
-        )
-        
-        ]
+              SizedBox(height: 50),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  backgroundColor: Color(0xFF6D7881),
+                  elevation: 2.0,
                 ),
+                onPressed: () {
+                  Navigator.popUntil(
+                    context,
+                    ModalRoute.withName('/'),
+                  );
+                },
+                child: const Text('Zurück zum Anfang',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white)),
+              ),
+              CustomPaint(
+                painter: FireworkPainter(_fireworks),
+                child: Container(),
+              )
+            ]),
       ),
     );
   }
