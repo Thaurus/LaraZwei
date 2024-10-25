@@ -19,11 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Informationen für Eltern und Lehrkräfte"),
-          content: const Text(
-              "Diese App wurde speziell entwickelt, um Kinder spielerisch und systematisch beim Schreibenlernen zu unterstützen. Der Fokus liegt auf lautgetreuen Wörtern – also Wörtern, die so geschrieben werden, wie sie gesprochen werden. Das erleichtert den Einstieg in die Welt des Schreibens, da Kinder Buchstaben und Laute direkt miteinander verknüpfen können.."
-              "\n"
-              "\n"
-              "Icons von Freepik"),
+          content: new SingleChildScrollView(scrollDirection: Axis.vertical,//.horizontal
+        child: new Text((setup.elternText))),
           actions: [
             TextButton(
               onPressed: () {

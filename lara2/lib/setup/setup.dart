@@ -69,3 +69,59 @@ Map<Map<String, dynamic>, List<String>> images = {
   {"title": "Kapitel 15", "subtitle": "Wörter mit en", "color": Color(0xFFfda103)}: ["Besen", "Daumen", "Knochen", "Kuchen", "Ofen", "Regen"],
   {"title": "Kapitel 16", "subtitle": "Wörter mit el", "color": Color(0xFF9ac357)}: ["Ampel", "Engel", "Gabel", "Igel", "Muschel", "Schaukel", "Tafel"]
 };
+
+
+const String elternText =
+    "So funktioniert Lara2:"
+    "\n\n"
+    "Lara2 ist eine Lern-Software, die Kinder beim Schreiben lernen unterstützen soll. Hier einige Informationen und Tipps, wie Sie die Software optimal nutzen können:"
+    "\n\n"
+    "1. Lerninhalte"
+    "\n"
+    "Das Programm zeigt auf dem Bildschirm jeweils einen Gegenstand, eine Person oder ein Tier aus der Lebenswelt der Kinder. Das Kind schreibt das passende Wort unter das jeweilige Bild. Die Kästchen geben dabei die Anzahl der Buchstaben vor. Das Progamm enhält über 100 Begriffe, kapitelweise nach bestimmten Lauten sortiert und mit zunehmendem Schwierigkeitsgrad. Alle Wörter sind lautgetreu."
+    "\n\n"
+    "2. Feedback"
+    "\n"
+    "Das Feedback erfolgt unmittelbar, indem Fehlschreibungen nicht übernommen, sondern duch ein visuelles Signal angezeigt werden. So können Fehler erkannt und selbstständig korrigiert werden. Wörter, bei denen ein Fehler gemacht wurde, werden am Ende des Kapitels so oft wiederholt bis das Wort fehlerfrei geschrieben und damit richtig verinnerlicht wurde. Der zunehmende Balken am oberen Bildschirmrand zeigt den Fortschritt des Kapitels an. Das Programm ist bewusst einfach und übersichtlich gehalten, sodass Kinder es schnell selbstständig navigieren können und nicht unnötig abgelenkt werden."
+    "\n\n"
+    "3. Hilfen"
+    "\n"
+    "Mit einem Klick auf den Lautsprecher wird das abgebildete Wort vorgsprochen. Kommt ein Kind bei einem Wort nicht weiter, kann es mit einem Klick auf die Glühbirne neben dem Wort den jeweils nächste Buchstaben anzeigen lassen. Das Wort wird dann am Ende des Kapitels so oft wiederholt, bis es ohne Unterstützung geschrieben werden kann."
+    "\n\n"
+    "4. LehrerInnen-/Eltern-Bereich:"
+    "\n"
+    "Bevor das jeweils nächste Bild angezeigt wird, wird Zeit gegeben, in der das Wort nachgelesen werden kann. Die Zeit kann zwischen 0 und 4 eingestellt werden. Der Sound kann ein- oder ausgeschaltet werden. Ebenso können die Tipps ein- oder ausgeschaltet werden. Wird der einfache Modus aktiviert, müssen falsch geschriebene Wörter am Ende des Kapitels nicht erneut geschrieben werden."
+    "\n\n"
+    "5. Gemeinsames Lernen:"
+    "\n"
+    "Beim gemeinsamen Lernen können Wörter in Silben gegliedert vorgesprochen werden. Beispiel Sofa. „Was hörst du am Anfang?“. „Genau, jetzt steht dort «S» und es fehlt noch «ofa».“„Was hört du als nächstes? Gut, jetzt hast du «So» geschrieben und es fehlt noch «fa»“ usw. Wenn Sie Ihrem Kind einzelne Buchstaben oder Worte vorsprechen, sollten diese lautiert werden, ein d ist also nicht dee sondern «d», g nicht gee, sondern «g», sch ist nicht ess-ce-ha sondern «sch», f ist nicht ef, sondern «f» usw. Achten Sie beim Üben auf eine altersangemessene Bildschirmzeit."
+    "\n"
+    "\n"
+    "Bildnachweis: Icons von Freepik";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
