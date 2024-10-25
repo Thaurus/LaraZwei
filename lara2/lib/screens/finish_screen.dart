@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -23,6 +24,8 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
   final AudioPlayer audioPlayer = AudioPlayer();
   late Size _screenSize;
 
+  bool isFrozen = false;
+
   void playSound() async {
       await audioPlayer.play('assets/sounds/finish.mp3');
   }
@@ -35,6 +38,13 @@ class _FinishScreenState extends State<FinishScreen> with SingleTickerProviderSt
       vsync: this,
       duration: const Duration(seconds: 3),
     )..repeat();
+
+    Timer(Duration(seconds: 10), () {
+      setState(() {
+        isFrozen = true;
+      });
+      _controller.stop(); // Stop the animation controller
+    });
 
     // Defer initialization of fireworks until after the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {

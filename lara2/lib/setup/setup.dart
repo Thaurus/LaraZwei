@@ -12,7 +12,7 @@ Color getChapterColor(int index) {
 
 
 Map<Map<String, dynamic>, List<String>> images = {
-  {"title": "Kapitel 1", "subtitle": "Einfacher Start", "color": Color(0xFFFF7F50)}: ["Oma","Opa", "Wal", "Ufo", "Hut", "Hose", "Hase", "Nase"],
+  {"title": "Kapitel 1", "subtitle": "Einfacher Start", "color": Color(0xFFFF7F50)}: ["Oma", "Opa", "Wal", "Ufo", "Hut", "Hose", "Hase", "Nase"],
   {"title": "Kapitel 2", "subtitle": "Jetzt wird's knifflig", "color": Color(0xFF40E0D0)}: [
     "Sofa",
     "Brot",

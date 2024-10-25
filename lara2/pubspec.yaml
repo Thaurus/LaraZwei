@@ -30,6 +30,7 @@ environment:
 dependencies:
   audioplayers: ^0.20.1
   path_provider: ^2.1.4
+  flare_flutter: ^3.0.2
   flutter_animate: ^4.0.0
   flutter:
     sdk: flutter
@@ -83,6 +84,7 @@ flutter:
     - assets/images/Kapitel 14/
     - assets/images/Kapitel 15/
     - assets/images/Kapitel 16/
+    - assets/images/Done.png
     - assets/images/
     - assets/sounds/
   # To add assets to your application, add an assets section, like this:
