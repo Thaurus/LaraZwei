@@ -21,9 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text("Informationen für Eltern und Lehrkräfte"),
           content: const Text(
               "Diese App wurde speziell entwickelt, um Kinder spielerisch und systematisch beim Schreibenlernen zu unterstützen. Der Fokus liegt auf lautgetreuen Wörtern – also Wörtern, die so geschrieben werden, wie sie gesprochen werden. Das erleichtert den Einstieg in die Welt des Schreibens, da Kinder Buchstaben und Laute direkt miteinander verknüpfen können.."
-                  "\n"
-                  "\n"
-                  "Icons von Freepik"),
+              "\n"
+              "\n"
+              "Icons von Freepik"),
           actions: [
             TextButton(
               onPressed: () {
@@ -43,9 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.info_rounded),
-            onPressed: _showInformationPopup
-          ),
+              icon: const Icon(Icons.info_rounded),
+              onPressed: _showInformationPopup),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
@@ -96,7 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  backgroundColor: getChapterAlreadyFinished(index) ? Color(0x66666666): setup.getChapterColor(index),
+                                  backgroundColor:
+                                      getChapterAlreadyFinished(index)
+                                          ? Color(0x66666666)
+                                          : setup.getChapterColor(index),
                                   elevation: 2.0,
                                 ),
                                 onPressed: () {
@@ -105,7 +107,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     MaterialPageRoute(
                                       builder: (context) => QuizScreen(index),
                                     ),
-                                  );
+                                  ).then((value) {
+                                    setState(() {});
+                                  });
                                 },
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,7 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
-
                               );
                             });
                           }))

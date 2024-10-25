@@ -33,6 +33,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   bool isPlaying = false;
 
   late FlutterTts flutterTts;
+  Timer? focusTimer;
 
   @override
   void initState() {
@@ -56,6 +57,11 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
     flutterTts.setSpeechRate(0.7);
     flutterTts.setVolume(1.0);
     flutterTts.setPitch(1.0);
+    focusTimer = Timer.periodic(const Duration(milliseconds: 500), (Timer t) {
+      if (getCurrentCharIndex != -1) {
+        _focusNodes[getCurrentCharIndex].requestFocus();
+      }
+    });
   }
 
   @override
@@ -67,6 +73,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       focusNode.dispose();
     }
     super.dispose();
+    animationController.dispose();
   }
 
   void update() {
@@ -119,6 +126,9 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
     }
     return List.from(setup.images.values.toList()[index]);
   }
+
+  int get getCurrentCharIndex =>
+      _controllers.indexWhere((element) => element.text.isEmpty);
 
   Widget wordTextField() {
     return ShakeAnimator(
@@ -189,7 +199,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        int index = _controllers.indexWhere((element) => element.text.isEmpty);
+        int index = getCurrentCharIndex;
         if (index != -1 && !_focusNodes[index].hasFocus) {
           _focusNodes[index].requestFocus();
         }
@@ -227,15 +237,18 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                           IconButton(
                               onPressed: () {
                                 flutterTts.speak(currentWord);
+                                int index = getCurrentCharIndex;
+                                if (index != -1 &&
+                                    !_focusNodes[index].hasFocus) {
+                                  _focusNodes[index].requestFocus();
+                                }
                               },
                               icon: const Icon(Icons.volume_up)),
                         wordTextField(),
                         if (globals.allowHints)
                           IconButton(
                               onPressed: () {
-                                int nextEmptyFieldIndex =
-                                    _controllers.indexWhere(
-                                        (element) => element.text.isEmpty);
+                                int nextEmptyFieldIndex = getCurrentCharIndex;
                                 if (nextEmptyFieldIndex == -1) return;
                                 hints++;
                                 didNoMistake = false;
