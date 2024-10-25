@@ -224,7 +224,7 @@ class PasswordProtectedScreen extends StatefulWidget {
 }
 
 class _PasswordProtectedScreenState extends State<PasswordProtectedScreen> {
-  final String password = '1234';
+  final String password = 'Ramona';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

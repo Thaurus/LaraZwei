@@ -8,9 +8,7 @@ class Firework {
   bool isFinished = false;
 
   Firework(Size screenSize)
-      : position = Offset(
-      Random().nextDouble() * screenSize.width,
-      Random().nextDouble() * screenSize.height / 2),
+      : position = Offset(Random().nextDouble() * screenSize.width, Random().nextDouble() * screenSize.height - screenSize.height/1.8),
         color = Color.fromARGB(
           255,
           Random().nextInt(256),
